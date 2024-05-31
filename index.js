@@ -4,6 +4,7 @@ const path = require("path");
 const config = require("./config");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+require("dotenv").config();
 
 const app = express();
 const port = config.port || 3000;
@@ -29,5 +30,5 @@ function loadRoutes(folderName) {
 loadRoutes("api");
 
 app.listen(port, () => {
-	console.log(`Server listening on port ${port}`);
+	console.log(`Server listening on http://localhost:${port}/`);
 });
