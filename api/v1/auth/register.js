@@ -9,13 +9,13 @@ router.post('/', async (req, res) => {
     const {username, name, lastname, password} = req.body;
 
     if (!username || !name || !lastname || !password) {
-        return res.status(500).send({error: "invalid request"});
+        return res.status(400).send({error: "invalid request"});
     }
 
     const user = await getUser(username);
 
     if (user[0]) {
-        return res.status(500).send({error: "user already exist"});
+        return res.status(400).send({error: "user already exist"});
     }
 
     await addUser(username, name, lastname, sha256(password));

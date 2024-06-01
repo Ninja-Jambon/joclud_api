@@ -1,0 +1,12 @@
+version: '3.1'
+
+services:
+  joclud_api:
+    build:
+      context: .
+      dockerfile: DOCKERFILE
+    restart: always
+    volumes:
+      - /full/path/to/bot:/app
+    ports:
+      - "3000:3000"

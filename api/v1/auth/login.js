@@ -12,11 +12,11 @@ router.post('/', async (req, res) => {
     const user = await getUser(username);
 
     if (!user[0]) {
-        return res.status(500).send({error: "wrong login informations"});
+        return res.status(400).send({error: "wrong login informations"});
     }
     
     if (!(sha256(password) == user[0].password)) {
-        return res.status(500).send({error: "wrong login informations"});
+        return res.status(400).send({error: "wrong login informations"});
     }
 
     res.status(200).send({message: "connection successful", token: jwt.sign({username: username, expiration: 20000}, process.env.JWTSecret)});

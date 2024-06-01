@@ -8,12 +8,14 @@ const router = express.Router();
 router.post('/', async (req, res) => {
     const {token} = req.body;
 
-    let user;
+    if (!token) {
+        return res.status(400).send({error: "invalid token"});
+    }
 
     try {
-        user = jwt.verify(token, process.env.JWTSecret);
+        jwt.verify(token, process.env.JWTSecret);
     } catch {
-        return res.status(500).send({error: "invalid token"});
+        return res.status(400).send({error: "invalid token"});
     }
 
     const games = await getGames();
