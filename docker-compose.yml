@@ -7,6 +7,6 @@ services:
       dockerfile: DOCKERFILE
     restart: always
     volumes:
-      - /full/path/to/bot:/app
+      - /home/lucien/joclud_api:/app
     ports:
       - "3000:3000"
