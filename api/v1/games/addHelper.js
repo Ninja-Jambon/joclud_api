@@ -26,7 +26,8 @@ router.post('/', async (req, res) => {
         }
 
         await addHelper(user.user.username, gameid);
-    } catch {
+    } catch (error) {
+        console.log(error);
         return res.status(400).send({error: "invalid token"});
     }
 
