@@ -25,7 +25,7 @@ router.post('/', async (req, res) => {
             return res.status(400).send({error: "you are already an helper for this game"});
         }
 
-        await addHelper(user.user.id, gameid);
+        await addHelper(user.user.username, gameid);
     } catch {
         return res.status(400).send({error: "invalid token"});
     }

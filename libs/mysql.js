@@ -39,10 +39,10 @@ function getGame(gameid) {
   })
 }
 
-function addHelper(userid, gameid) {
+function addHelper(username, gameid) {
   return new Promise((resolve, reject) => {
     con.query(
-      `UPDATE games SET helpers = JSON_ARRAY_APPEND(helpers, '$', ${userid}) WHERE id = ${gameid}`,
+      `UPDATE games SET helpers = JSON_ARRAY_APPEND(helpers, '$', ${username}) WHERE id = ${gameid}`,
       (error, result) => {
         if (error) {
           reject(new Error(error));
@@ -53,10 +53,10 @@ function addHelper(userid, gameid) {
   })
 }
 
-function removeHelper(userid, gameid) {
+function removeHelper(username, gameid) {
   return new Promise((resolve, reject) => {
     con.query(
-      `UPDATE games SET helpers = JSON_REMOVE(helpers, JSON_UNQUOTE(JSON_SEARCH(helpers, 'one', ${userid}))) WHERE id = ${gameid}`,
+      `UPDATE games SET helpers = JSON_REMOVE(helpers, JSON_UNQUOTE(JSON_SEARCH(helpers, 'one', ${username}))) WHERE id = ${gameid}`,
       (error, result) => {
         if (error) {
           reject(new Error(error));

@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
 
     try {
         const user = jwt.verify(token, process.env.JWTSecret);
-        await removeHelper(user.user.id, gameid);
+        await removeHelper(user.user.username, gameid);
     } catch {
         return res.status(400).send({error: "invalid token"});
     }
