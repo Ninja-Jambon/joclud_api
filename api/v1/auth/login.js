@@ -19,7 +19,9 @@ router.post('/', async (req, res) => {
         return res.status(400).send({error: "wrong login informations"});
     }
 
-    res.status(200).send({message: "connection successful", token: jwt.sign({username: username, expiration: 20000}, process.env.JWTSecret)});
+    console.log(user);
+
+    res.status(200).send({message: "connection successful", token: jwt.sign({user: {id: user[0].id, username: user[0].username, name: user[0].name, lastname: user[0].lastname}, expiration: 20000}, process.env.JWTSecret)});
 });
 
 module.exports = router;

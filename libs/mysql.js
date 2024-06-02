@@ -25,6 +25,48 @@ function getGames() {
   });
 }
 
+function getGame(gameid) {
+  return new Promise((resolve, reject) => {
+    con.query(
+      `SELECT * FROM games WHERE id = "${gameid}"`,
+      (error, result) => {
+        if (error) {
+          reject(new Error(error));
+        }
+        resolve(result);
+      }
+    )
+  })
+}
+
+function addHelper(userid, gameid) {
+  return new Promise((resolve, reject) => {
+    con.query(
+      `UPDATE games SET helpers = JSON_ARRAY_APPEND(helpers, '$', ${userid}) WHERE id = ${gameid}`,
+      (error, result) => {
+        if (error) {
+          reject(new Error(error));
+        }
+        resolve(result);
+      }
+    )
+  })
+}
+
+function removeHelper(userid, gameid) {
+  return new Promise((resolve, reject) => {
+    con.query(
+      `UPDATE games SET helpers = JSON_REMOVE(helpers, JSON_UNQUOTE(JSON_SEARCH(helpers, 'one', ${userid}))) WHERE id = ${gameid}`,
+      (error, result) => {
+        if (error) {
+          reject(new Error(error));
+        }
+        resolve(result);
+      }
+    );
+  });
+}
+
 // +-----------------------------------+
 // |               AUTH                |
 // +-----------------------------------+
@@ -57,6 +99,9 @@ function addUser(username, name, lastname, password) {
 
 module.exports = {
   getGames,
+  getGame,
+  addHelper,
+  removeHelper,
 
   getUser,
   addUser,
