@@ -10,3 +10,4 @@ services:
       - /home/lucien/joclud_api:/app
     ports:
       - "3000:3000"
+      - "443:443"
