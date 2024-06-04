@@ -13,7 +13,9 @@ const port = config.port || 3000;
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-	origin: "https://joclud.leizour.fr"
+	origin: "https://joclud.leizour.fr",
+	methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+	allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
 function loadRoutes(folderName) {
