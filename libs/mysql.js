@@ -128,6 +128,19 @@ function getUnverifiedUsers() {
   }) 
 }
 
+function setVerified(userid) {
+  return new Promise((resolve, reject) => {
+    con.query(
+      `UPDATE users SET verified = 1 WHERE id = ${userid}`,
+      (error, result) => {
+        if (error) {
+          reject(new Error(error));
+        }
+        resolve(result);
+      })
+  }) 
+}
+
 module.exports = {
   getGames,
   getGame,
@@ -139,4 +152,5 @@ module.exports = {
   addUser,
 
   getUnverifiedUsers,
+  setVerified,
 };
