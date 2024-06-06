@@ -111,6 +111,23 @@ function addUser(username, name, lastname, password) {
   }) 
 }
 
+// +-----------------------------------+
+// |              ADMIN                |
+// +-----------------------------------+
+
+function getUnverifiedUsers() {
+  return new Promise((resolve, reject) => {
+    con.query(
+      `SELECT * FROM users WHERE verified = 0`,
+      (error, result) => {
+        if (error) {
+          reject(new Error(error));
+        }
+        resolve(result);
+      })
+  }) 
+}
+
 module.exports = {
   getGames,
   getGame,
@@ -120,4 +137,6 @@ module.exports = {
 
   getUser,
   addUser,
+
+  getUnverifiedUsers,
 };
