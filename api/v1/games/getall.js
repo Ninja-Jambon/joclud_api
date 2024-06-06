@@ -13,7 +13,11 @@ router.post('/', async (req, res) => {
     }
 
     try {
-        jwt.verify(token, process.env.JWTSecret);
+        const user = jwt.verify(token, process.env.JWTSecret);
+
+        if (user.expiration < Date.now()) {
+            return res.status(400).send({error: "token expired"});
+        }
     } catch {
         return res.status(400).send({error: "invalid token"});
     }

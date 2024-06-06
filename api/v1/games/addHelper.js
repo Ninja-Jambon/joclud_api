@@ -12,8 +12,16 @@ router.post('/', async (req, res) => {
         return res.status(400).send({error: "invalid token"});
     }
 
+    if (!gameid) {
+        return res.status(400).send({error: "invalid gameid"});
+    }
+
     try {
         const user = jwt.verify(token, process.env.JWTSecret);
+
+        if (user.expiration < Date.now()) {
+            return res.status(400).send({error: "token expired"});
+        }
         
         const game = await getGame(gameid);
 
@@ -21,7 +29,7 @@ router.post('/', async (req, res) => {
             return res.status(400).send({error: "this game doesn't exist"});
         }
 
-        if (JSON.parse(game[0].helpers).includes(user.user.id)) {
+        if (JSON.parse(game[0].helpers).includes(user.user.username)) {
             return res.status(400).send({error: "you are already an helper for this game"});
         }
 

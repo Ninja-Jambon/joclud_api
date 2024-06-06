@@ -19,9 +19,13 @@ router.post('/', async (req, res) => {
         return res.status(400).send({error: "wrong login informations"});
     }
 
-    console.log(user);
+    if (!user[0].verified) {
+        return res.status(400).send({error: "you need to be verified to login"})
+    }
 
-    res.status(200).send({message: "connection successful", token: jwt.sign({user: {id: user[0].id, username: user[0].username, name: user[0].name, lastname: user[0].lastname}, expiration: 20000}, process.env.JWTSecret)});
+    const expiration = new Date().getTime() + 1000 * 60 * 60 * 24 * 7;
+
+    res.status(200).send({message: "connection successful", token: jwt.sign({user: {id: user[0].id, username: user[0].username, name: user[0].name, lastname: user[0].lastname}, expiration: 2000}, process.env.JWTSecret)});
 });
 
 module.exports = router;
