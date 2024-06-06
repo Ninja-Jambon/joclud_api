@@ -128,10 +128,10 @@ function getUnverifiedUsers() {
   }) 
 }
 
-function setVerified(userid) {
+function setVerified(username) {
   return new Promise((resolve, reject) => {
     con.query(
-      `UPDATE users SET verified = 1 WHERE id = ${userid}`,
+      `UPDATE users SET verified = 1 WHERE usernaùe = ${username}`,
       (error, result) => {
         if (error) {
           reject(new Error(error));

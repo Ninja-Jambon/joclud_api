@@ -6,7 +6,7 @@ const {setVerified, getUser} = require("../../../libs/mysql.js")
 const router = express.Router();
 
 router.post('/', async (req, res) => {
-    const {token, userid} = req.body;
+    const {token, username} = req.body;
 
     if (!token) {
         return res.status(400).send({error: "invalid token"});
@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
         return res.status(400).send({error: "invalid token"});
     }
 
-    const user = await getUser(userid);
+    const user = await getUser(username);
 
     if (!user[0]) {
         return res.status(400).send({error: "invalid userid"});
@@ -36,7 +36,7 @@ router.post('/', async (req, res) => {
         return res.status(400).send({error: "user already verified"});
     }
 
-    await setVerified(userid);
+    await setVerified(username);
     res.status(200).send({message: "user verified"});
 });
 
