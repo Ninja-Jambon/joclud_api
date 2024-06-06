@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
             return res.status(400).send({error: "token expired"});
         }
 
-        if (!user.admin) {
+        if (!user.user.admin) {
             return res.status(400).send({error: "unauthorized"});
         }
     } catch {
