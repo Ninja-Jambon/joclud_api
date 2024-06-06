@@ -14,7 +14,7 @@ const con = mysql.createConnection({
 function getGames() {
   return new Promise((resolve, reject) => {
     con.query(
-      `SELECT title, subtitle, type, players, duration, ages FROM games`,
+      `SELECT id, title, subtitle, type, players, duration, ages FROM games`,
       (error, result) => {
         if (error) {
           reject(new Error(error));
