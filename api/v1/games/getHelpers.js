@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
         return res.status(400).send({error: "this game doesn't exist in the data base"})
     };
     
-    res.status(200).send(JSON.parse(helpers[0]));
+    res.status(200).send(JSON.parse(helpers[0].helpers));
 });
 
 module.exports = router;
