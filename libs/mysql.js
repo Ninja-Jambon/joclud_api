@@ -14,7 +14,7 @@ const con = mysql.createConnection({
 function getGames() {
   return new Promise((resolve, reject) => {
     con.query(
-      `SELECT * FROM games`,
+      `SELECT title, subtitle, type, players, duration, ages FROM games`,
       (error, result) => {
         if (error) {
           reject(new Error(error));
@@ -67,6 +67,20 @@ function removeHelper(username, gameid) {
   });
 }
 
+function getHelpers(gameid) {
+  return new Promise((resolve, reject) => {
+    con.query(
+      `SELECT helpers FROM games WHERE id = "${gameid}"`,
+      (error, result) => {
+        if (error) {
+          reject(new Error(error));
+        }
+        resolve(result);
+      }
+    )
+  })
+}
+
 // +-----------------------------------+
 // |               AUTH                |
 // +-----------------------------------+
@@ -102,6 +116,7 @@ module.exports = {
   getGame,
   addHelper,
   removeHelper,
+  getHelpers,
 
   getUser,
   addUser,
