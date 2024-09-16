@@ -13,7 +13,7 @@ export function getConnection() {
 // |              GAMES                |
 // +-----------------------------------+
 
-export function getGames(connection) {
+function getGames(connection) {
   return new Promise((resolve, reject) => {
     connection.query(
       `SELECT id, title, subtitle, type, players, duration, ages FROM games`,
@@ -27,7 +27,7 @@ export function getGames(connection) {
   });
 }
 
-export function getGame(connection, gameid) {
+function getGame(connection, gameid) {
   return new Promise((resolve, reject) => {
     connection.query(
       `SELECT * FROM games WHERE id = "${gameid}"`,
@@ -41,7 +41,7 @@ export function getGame(connection, gameid) {
   })
 }
 
-export function addHelper(connection, username, gameid) {
+function addHelper(connection, username, gameid) {
   return new Promise((resolve, reject) => {
     connection.query(
       `UPDATE games SET helpers = JSON_ARRAY_APPEND(helpers, '$', "${username}") WHERE id = ${gameid}`,
@@ -55,7 +55,7 @@ export function addHelper(connection, username, gameid) {
   })
 }
 
-export function removeHelper(connection, username, gameid) {
+function removeHelper(connection, username, gameid) {
   return new Promise((resolve, reject) => {
     connection.query(
       `UPDATE games SET helpers = JSON_REMOVE(helpers, JSON_UNQUOTE(JSON_SEARCH(helpers, 'one', "${username}"))) WHERE id = ${gameid}`,
@@ -69,7 +69,7 @@ export function removeHelper(connection, username, gameid) {
   });
 }
 
-export function getHelpers(connection, gameid) {
+function getHelpers(connection, gameid) {
   return new Promise((resolve, reject) => {
     connection.query(
       `SELECT helpers FROM games WHERE id = "${gameid}"`,
@@ -87,7 +87,7 @@ export function getHelpers(connection, gameid) {
 // |               AUTH                |
 // +-----------------------------------+
 
-export function getUser(connection, username) {
+function getUser(connection, username) {
   return new Promise((resolve, reject) => {
     connection.query(
       `SELECT * FROM users WHERE username = "${username}"`,
@@ -100,7 +100,7 @@ export function getUser(connection, username) {
   }) 
 }
 
-export function addUser(connection, username, name, lastname, password) {
+function addUser(connection, username, name, lastname, password) {
   return new Promise((resolve, reject) => {
     connection.query(
       `INSERT INTO users(username, name, lastname, password) VALUES("${username}", "${name}", "${lastname}", "${password}")`,
@@ -130,7 +130,7 @@ export function getUnverifiedUsers(connection) {
   }) 
 }
 
-export function setVerified(connection, username) {
+function setVerified(connection, username) {
   return new Promise((resolve, reject) => {
     connection.query(
       `UPDATE users SET verified = 1 WHERE username = "${username}"`,
