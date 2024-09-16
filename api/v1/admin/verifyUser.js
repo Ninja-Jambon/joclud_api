@@ -27,7 +27,6 @@ router.post('/', async (req, res) => {
     }
 
     const connection = await getConnection();
-
     const user = await getUser(connection, username);
 
     if (!user[0]) {
@@ -38,7 +37,7 @@ router.post('/', async (req, res) => {
         return res.status(400).send({error: "user already verified"});
     }
 
-    await setVerified(username);
+    await setVerified(connection, username);
     connection.end()
     res.status(200).send({message: "user verified"});
 });

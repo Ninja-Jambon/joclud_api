@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
         }
 
         const connection = await getConnection();
-        const game = await getGame(gameid);
+        const game = await getGame(connection, gameid);
 
         if (!game[0]) {
             return res.status(400).send({error: "this game doesn't exist"});
@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
             return res.status(400).send({error: "you are not an helper for this game"});
         }
 
-        await removeHelper(user.user.username, gameid);
+        await removeHelper(connection, user.user.username, gameid);
         connection.end()
     } catch {
         return res.status(400).send({error: "invalid token"});

@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
     }
 
     const connection = await getConnection();
-    const helpers = await getHelpers(gameid)
+    const helpers = await getHelpers(connection, gameid)
     connection.end();
 
     if (!helpers[0]) {
