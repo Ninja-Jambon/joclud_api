@@ -1,6 +1,6 @@
 const mysql = require("mysql");
 
-export function getConnection() {
+function getConnection() {
   return mysql.createConnection({
     host: process.env.MysqlHost,
     user: process.env.MysqlUser,
@@ -117,7 +117,7 @@ function addUser(connection, username, name, lastname, password) {
 // |              ADMIN                |
 // +-----------------------------------+
 
-export function getUnverifiedUsers(connection) {
+function getUnverifiedUsers(connection) {
   return new Promise((resolve, reject) => {
     connection.query(
       `SELECT * FROM users WHERE verified = 0`,
