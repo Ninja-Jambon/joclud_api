@@ -1,13 +1,12 @@
-version: '3.1'
-
 services:
   joclud_api:
     build:
       context: .
       dockerfile: DOCKERFILE
+      network: host
     restart: always
-    volumes:
-      - /home/lucien/joclud_api:/app
+    image: joclud_api
     ports:
       - "3000:3000"
       - "443:443"
+    container_name: joclud_api
