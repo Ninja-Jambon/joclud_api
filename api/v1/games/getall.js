@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
         return res.status(400).send({error: "invalid token"});
     }
 
-    const connection = getConnection();
+    const connection = await getConnection();
     const games = await getGames();
     connection.end();
     res.status(200).send(games);

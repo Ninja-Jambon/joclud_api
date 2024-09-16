@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
             return res.status(400).send({error: "token expired"});
         }
 
-        const connection = getConnection();
+        const connection = await getConnection();
         const game = await getGame(gameid);
 
         if (!game[0]) {

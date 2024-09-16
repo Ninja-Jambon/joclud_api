@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
         return res.status(400).send({error: "invalid token"});
     }
 
-    const connection = getConnection();
+    const connection = await getConnection();
     const helpers = await getHelpers(gameid)
     connection.end();
 
