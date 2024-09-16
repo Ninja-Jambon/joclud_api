@@ -142,3 +142,19 @@ export function setVerified(connection, username) {
       })
   }) 
 }
+
+module.exports = {
+  getConnection,
+
+  getGames,
+  getGame,
+  addHelper,
+  removeHelper,
+  getHelpers,
+
+  getUser,
+  addUser,
+
+  getUnverifiedUsers,
+  setVerified,
+};
