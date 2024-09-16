@@ -1,7 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 
-const {getHelpers} = require("../../../libs/mysql.js")
+const { getConnection, getHelpers } = require("../../../libs/mysql.js")
 
 const router = express.Router();
 
@@ -26,7 +26,9 @@ router.post('/', async (req, res) => {
         return res.status(400).send({error: "invalid token"});
     }
 
+    const connection = getConnection();
     const helpers = await getHelpers(gameid)
+    connection.end();
 
     if (!helpers[0]) {
         return res.status(400).send({error: "this game doesn't exist in the data base"})

@@ -1,7 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 
-const {removeHelper, getGame} = require("../../../libs/mysql.js")
+const { getConnection, removeHelper, getGame } = require("../../../libs/mysql.js")
 
 const router = express.Router();
 
@@ -23,6 +23,7 @@ router.post('/', async (req, res) => {
             return res.status(400).send({error: "token expired"});
         }
 
+        const connection = getConnection();
         const game = await getGame(gameid);
 
         if (!game[0]) {
@@ -34,6 +35,7 @@ router.post('/', async (req, res) => {
         }
 
         await removeHelper(user.user.username, gameid);
+        connection.end()
     } catch {
         return res.status(400).send({error: "invalid token"});
     }

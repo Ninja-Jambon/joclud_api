@@ -1,7 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 
-const {getGames} = require("../../../libs/mysql.js")
+const { getConnection, getGames } = require("../../../libs/mysql.js")
 
 const router = express.Router();
 
@@ -22,7 +22,9 @@ router.post('/', async (req, res) => {
         return res.status(400).send({error: "invalid token"});
     }
 
+    const connection = getConnection();
     const games = await getGames();
+    connection.end();
     res.status(200).send(games);
 });
 

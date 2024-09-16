@@ -2,14 +2,16 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const sha256 = require("sha256");
 
-const { getUser } = require("../../../libs/mysql");
+const { getConnection, getUser } = require("../../../libs/mysql");
 
 const router = express.Router();
 
 router.post('/', async (req, res) => {
     const {username, password} = req.body;
 
-    const user = await getUser(username);
+    const connection = await getConnection();
+
+    const user = await getUser(connection, username);
 
     if (!user[0]) {
         return res.status(400).send({error: "wrong login informations"});

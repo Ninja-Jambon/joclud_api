@@ -1,19 +1,21 @@
 const mysql = require("mysql");
 
-const con = mysql.createConnection({
-  host: process.env.MysqlHost,
-  user: process.env.MysqlUser,
-  password: process.env.MysqlPassword,
-  database: process.env.MysqlDb,
-});
+export function getConnection() {
+  return mysql.createConnection({
+    host: process.env.MysqlHost,
+    user: process.env.MysqlUser,
+    password: process.env.MysqlPassword,
+    database: process.env.MysqlDb,
+  });
+}
 
 // +-----------------------------------+
 // |              GAMES                |
 // +-----------------------------------+
 
-function getGames() {
+export function getGames(connection) {
   return new Promise((resolve, reject) => {
-    con.query(
+    connection.query(
       `SELECT id, title, subtitle, type, players, duration, ages FROM games`,
       (error, result) => {
         if (error) {
@@ -25,9 +27,9 @@ function getGames() {
   });
 }
 
-function getGame(gameid) {
+export function getGame(connection, gameid) {
   return new Promise((resolve, reject) => {
-    con.query(
+    connection.query(
       `SELECT * FROM games WHERE id = "${gameid}"`,
       (error, result) => {
         if (error) {
@@ -39,9 +41,9 @@ function getGame(gameid) {
   })
 }
 
-function addHelper(username, gameid) {
+export function addHelper(connection, username, gameid) {
   return new Promise((resolve, reject) => {
-    con.query(
+    connection.query(
       `UPDATE games SET helpers = JSON_ARRAY_APPEND(helpers, '$', "${username}") WHERE id = ${gameid}`,
       (error, result) => {
         if (error) {
@@ -53,9 +55,9 @@ function addHelper(username, gameid) {
   })
 }
 
-function removeHelper(username, gameid) {
+export function removeHelper(connection, username, gameid) {
   return new Promise((resolve, reject) => {
-    con.query(
+    connection.query(
       `UPDATE games SET helpers = JSON_REMOVE(helpers, JSON_UNQUOTE(JSON_SEARCH(helpers, 'one', "${username}"))) WHERE id = ${gameid}`,
       (error, result) => {
         if (error) {
@@ -67,9 +69,9 @@ function removeHelper(username, gameid) {
   });
 }
 
-function getHelpers(gameid) {
+export function getHelpers(connection, gameid) {
   return new Promise((resolve, reject) => {
-    con.query(
+    connection.query(
       `SELECT helpers FROM games WHERE id = "${gameid}"`,
       (error, result) => {
         if (error) {
@@ -85,9 +87,9 @@ function getHelpers(gameid) {
 // |               AUTH                |
 // +-----------------------------------+
 
-function getUser(username) {
+export function getUser(connection, username) {
   return new Promise((resolve, reject) => {
-    con.query(
+    connection.query(
       `SELECT * FROM users WHERE username = "${username}"`,
       (error, result) => {
         if (error) {
@@ -98,9 +100,9 @@ function getUser(username) {
   }) 
 }
 
-function addUser(username, name, lastname, password) {
+export function addUser(connection, username, name, lastname, password) {
   return new Promise((resolve, reject) => {
-    con.query(
+    connection.query(
       `INSERT INTO users(username, name, lastname, password) VALUES("${username}", "${name}", "${lastname}", "${password}")`,
       (error, result) => {
         if (error) {
@@ -115,9 +117,9 @@ function addUser(username, name, lastname, password) {
 // |              ADMIN                |
 // +-----------------------------------+
 
-function getUnverifiedUsers() {
+export function getUnverifiedUsers(connection) {
   return new Promise((resolve, reject) => {
-    con.query(
+    connection.query(
       `SELECT * FROM users WHERE verified = 0`,
       (error, result) => {
         if (error) {
@@ -128,9 +130,9 @@ function getUnverifiedUsers() {
   }) 
 }
 
-function setVerified(username) {
+export function setVerified(connection, username) {
   return new Promise((resolve, reject) => {
-    con.query(
+    connection.query(
       `UPDATE users SET verified = 1 WHERE username = "${username}"`,
       (error, result) => {
         if (error) {
@@ -140,17 +142,3 @@ function setVerified(username) {
       })
   }) 
 }
-
-module.exports = {
-  getGames,
-  getGame,
-  addHelper,
-  removeHelper,
-  getHelpers,
-
-  getUser,
-  addUser,
-
-  getUnverifiedUsers,
-  setVerified,
-};

@@ -1,7 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 
-const {addHelper, getGame} = require("../../../libs/mysql.js")
+const { getConnection, addHelper, getGame } = require("../../../libs/mysql.js")
 
 const router = express.Router();
 
@@ -22,8 +22,10 @@ router.post('/', async (req, res) => {
         if (user.expiration < Date.now()) {
             return res.status(400).send({error: "token expired"});
         }
+
+        const connection = getConnection();
         
-        const game = await getGame(gameid);
+        const game = await getGame(connection, gameid);
 
         if (!game[0]) {
             return res.status(400).send({error: "this game doesn't exist"});
@@ -33,7 +35,8 @@ router.post('/', async (req, res) => {
             return res.status(400).send({error: "you are already an helper for this game"});
         }
 
-        await addHelper(user.user.username, gameid);
+        await addHelper(connection, user.user.username, gameid);
+        connection.end();
     } catch (error) {
         console.log(error);
         return res.status(400).send({error: "invalid token"});

@@ -1,7 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 
-const {setVerified, getUser} = require("../../../libs/mysql.js")
+const { getConnection, setVerified, getUser } = require("../../../libs/mysql.js")
 
 const router = express.Router();
 
@@ -26,7 +26,9 @@ router.post('/', async (req, res) => {
         return res.status(400).send({error: "invalid token"});
     }
 
-    const user = await getUser(username);
+    const connection = await getConnection();
+
+    const user = await getUser(connection, username);
 
     if (!user[0]) {
         return res.status(400).send({error: "invalid userid"});
@@ -37,6 +39,7 @@ router.post('/', async (req, res) => {
     }
 
     await setVerified(username);
+    connection.end()
     res.status(200).send({message: "user verified"});
 });
 
