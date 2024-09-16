@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
     }
 
     const connection = await getConnection();
-    const games = await getGames();
+    const games = await getGames(connection);
     connection.end();
     res.status(200).send(games);
 });

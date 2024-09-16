@@ -10,7 +10,6 @@ router.post('/', async (req, res) => {
     const {username, password} = req.body;
 
     const connection = await getConnection();
-
     const user = await getUser(connection, username);
 
     if (!user[0]) {
