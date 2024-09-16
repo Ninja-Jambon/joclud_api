@@ -1,4 +1,4 @@
-const mysql = require("mysql");
+import * as mysql from 'mysql';
 
 export function getConnection() {
   return mysql.createConnection({
