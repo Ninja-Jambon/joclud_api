@@ -30,7 +30,7 @@ function getGames(connection) {
 function getGame(connection, gameid) {
   return new Promise((resolve, reject) => {
     connection.query(
-      `SELECT * FROM games WHERE id = "${gameid}"`,
+      `SELECT * FROM games WHERE id = ${gameid}`,
       (error, result) => {
         if (error) {
           reject(new Error(error));
@@ -40,6 +40,25 @@ function getGame(connection, gameid) {
     )
   })
 }
+
+function addGame(connection, id, title, subtitle, edition, type, players, duration, ages, languages, universe, ranges, categories, themes, mecanisms, editor, authors, illustrators) {
+  console.log(`INSERT INTO games (id, title, subtitle, edition, type, players, duration, ages, languages, universe, ranges, categories, themes, mecanisms, editor, authors, illustrators) VALUES (${id}, "${title}", "${subtitle}", ${edition}, "${type}", "${players}", "${duration}", "${ages}", "${languages}", "${universe}", "${ranges}", "${categories}", "${themes}", "${mecanisms}", "${editor}", "${authors}", "${illustrators}")`)
+  return new Promise((resolve, reject) => {
+    connection.query(
+      `INSERT INTO games (id, title, subtitle, edition, type, players, duration, ages, languages, universe, ranges, categories, themes, mecanisms, editor, authors, illustrators) VALUES (${id}, "${title}", "${subtitle}", ${edition}, "${type}", "${players}", "${duration}", "${ages}", "${languages}", "${universe}", "${ranges}", "${categories}", "${themes}", "${mecanisms}", "${editor}", "${authors}", "${illustrators}")`,
+      (error, result) => {
+        if (error) {
+          reject(new Error(error));
+        }
+        resolve(result);
+      }
+    )
+  })
+}
+
+// +-----------------------------------+
+// |             HELPERS               |
+// +-----------------------------------+
 
 function addHelper(connection, game_id, user_id) {
   return new Promise((resolve, reject) => {
@@ -148,6 +167,8 @@ module.exports = {
 
   getGames,
   getGame,
+  addGame,
+
   addHelper,
   removeHelper,
   getHelpers,
