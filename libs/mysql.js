@@ -72,7 +72,7 @@ function removeHelper(connection, game_id, user_id) {
 function getHelpers(connection, game_id) {
   return new Promise((resolve, reject) => {
     connection.query(
-      `SELECT name helpers.user_id FROM helpers JOIN users ON helpers.user_id = users.id WHERE game_id = ${game_id}`,
+      `SELECT name, helpers.user_id FROM helpers JOIN users ON helpers.user_id = users.id WHERE game_id = ${game_id}`,
       (error, result) => {
         if (error) {
           reject(new Error(error));
