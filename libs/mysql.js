@@ -41,10 +41,10 @@ function getGame(connection, gameid) {
   })
 }
 
-function addHelper(connection, username, gameid) {
+function addHelper(connection, game_id, user_id) {
   return new Promise((resolve, reject) => {
     connection.query(
-      `UPDATE games SET helpers = JSON_ARRAY_APPEND(helpers, '$', "${username}") WHERE id = ${gameid}`,
+      `INSERT INTO helpers (game_id, user_id) VALUES (${game_id}, ${user_id})`,
       (error, result) => {
         if (error) {
           reject(new Error(error));
@@ -55,10 +55,10 @@ function addHelper(connection, username, gameid) {
   })
 }
 
-function removeHelper(connection, username, gameid) {
+function removeHelper(connection, game_id, user_id) {
   return new Promise((resolve, reject) => {
     connection.query(
-      `UPDATE games SET helpers = JSON_REMOVE(helpers, JSON_UNQUOTE(JSON_SEARCH(helpers, 'one', "${username}"))) WHERE id = ${gameid}`,
+      `DELETE FROM helpers WHERE game_id = ${game_id} and user_id = ${user_id}`,
       (error, result) => {
         if (error) {
           reject(new Error(error));
@@ -69,10 +69,10 @@ function removeHelper(connection, username, gameid) {
   });
 }
 
-function getHelpers(connection, gameid) {
+function getHelpers(connection, game_id) {
   return new Promise((resolve, reject) => {
     connection.query(
-      `SELECT helpers FROM games WHERE id = "${gameid}"`,
+      `SELECT name helpers.user_id FROM helpers JOIN users ON helpers.user_id = users.id WHERE game_id = ${game_id}`,
       (error, result) => {
         if (error) {
           reject(new Error(error));

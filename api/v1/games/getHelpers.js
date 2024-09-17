@@ -29,12 +29,8 @@ router.post('/', async (req, res) => {
     const connection = await getConnection();
     const helpers = await getHelpers(connection, gameid)
     connection.end();
-
-    if (!helpers[0]) {
-        return res.status(400).send({error: "this game doesn't exist in the data base"})
-    };
     
-    res.status(200).send(JSON.parse(helpers[0].helpers));
+    res.status(200).send(helpers);
 });
 
 module.exports = router;
