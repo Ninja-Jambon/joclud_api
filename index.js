@@ -8,7 +8,6 @@ const https = require("https");
 require("dotenv").config();
 
 const app = express();
-const port = config.port || 3000;
 
 app.use(express.json());
 app.use(cookieParser());
@@ -34,17 +33,6 @@ function loadRoutes(folderName) {
 
 loadRoutes("api");
 
-app.listen(port, () => {
-	console.log(`Server listening on http://localhost:${port}/`);
+app.listen(80, () => {
+	console.log(`Server listening on http://localhost:80/`);
 });
-
-const privateKey = fs.readFileSync("./sslcert/privkey.pem", "utf8");
-const certificate = fs.readFileSync("./sslcert/fullchain.pem", "utf8");
-
-const credentials = { key: privateKey, cert: certificate };
-
-const httpsServer = https.createServer(credentials, app);
-
-httpsServer.listen(443, () => {
-  console.log("https server listening on port 443")
-})
